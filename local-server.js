@@ -23,6 +23,19 @@ app.post('/api/auth', async (req, res) => {
   }
 });
 
+import manageUserHandler from './api/manageUser.js';
+
+app.post('/api/manageUser', async (req, res) => {
+  try {
+    await manageUserHandler(req, res);
+  } catch (err) {
+    console.error("Local Server Error:", err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Local API server running at http://localhost:${PORT}`);
