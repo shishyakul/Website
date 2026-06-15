@@ -1,0 +1,9 @@
+/* App.css – minimal global resets */
+main {
+  min-height: 100vh;
+}
+
+/* Ensure body has no default App.css style overrides from Vite boilerplate */
+#root {
+  min-height: 100vh;
+}
