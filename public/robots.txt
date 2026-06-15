@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://shishyakul.com/sitemap.xml
+Sitemap: https://www.shishyakul.in/sitemap.xml
