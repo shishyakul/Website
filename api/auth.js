@@ -22,21 +22,33 @@
  *   6. Portal calls signInWithCustomToken(token) to establish its own Firebase session
  */
 
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
+// We will dynamically import firebase-admin inside the handler 
+// to prevent Vercel cold-start crashes and catch any import errors.
+let adminApp;
+let adminAuth;
 
-/* ── Initialise Firebase Admin SDK (singleton) ── */
-function getAdminApp() {
-  if (getApps().length > 0) return getApps()[0];
+async function getAdminApp() {
+  if (adminApp) return adminApp;
 
-  return initializeApp({
+  // Dynamic imports
+  const { initializeApp, getApps, cert } = await import('firebase-admin/app');
+  const { getAuth } = await import('firebase-admin/auth');
+
+  adminAuth = getAuth;
+
+  if (getApps().length > 0) {
+    adminApp = getApps()[0];
+    return adminApp;
+  }
+
+  adminApp = initializeApp({
     credential: cert({
       projectId:   process.env.FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      // Vercel stores multi-line strings with literal \n — this restores real newlines
       privateKey:  process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     }),
   });
+  return adminApp;
 }
 
 export default async function handler(req, res) {
@@ -83,9 +95,8 @@ export default async function handler(req, res) {
     /* ── Step 2: Create a short-lived Custom Token using Admin SDK ──
        Custom tokens expire in 1 hour and are single-use by design.
        The portal will exchange this for a full Firebase session.      */
-    getAdminApp(); // Ensure app is initialised
-    const adminAuth = getAuth();
-    const customToken = await adminAuth.createCustomToken(uid);
+    await getAdminApp(); // Ensure app is initialised
+    const customToken = await adminAuth().createCustomToken(uid);
 
     const portalBase = process.env.PORTAL_URL ?? 'https://portal.shishyakul.in';
     const redirectUrl = `${portalBase}/auth?token=${encodeURIComponent(customToken)}`;
@@ -94,6 +105,6 @@ export default async function handler(req, res) {
 
   } catch (err) {
     console.error('[/api/auth] Unexpected error:', err);
-    return res.status(500).json({ error: 'Internal server error. Please try again.' });
+    return res.status(500).json({ error: `Internal server error: ${err.message}` });
   }
 }
