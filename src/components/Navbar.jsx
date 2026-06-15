@@ -44,7 +44,7 @@ export default function Navbar() {
 
         {/* CTA */}
         <div className="navbar-actions">
-          <a href="/portal/login" className="btn-pill" style={{ textDecoration: 'none' }}>Login</a>
+          <a href="/login" className="btn-pill" style={{ textDecoration: 'none' }}>Login</a>
           <button
             className={`navbar-hamburger ${menuOpen ? 'open' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}
@@ -70,7 +70,7 @@ export default function Navbar() {
             {label}
           </NavLink>
         ))}
-        <a href="/portal/login" className="btn-pill" style={{ marginTop: '12px', width: '100%', textDecoration: 'none', textAlign: 'center', display: 'inline-block', boxSizing: 'border-box' }}>
+        <a href="/login" className="btn-pill" style={{ marginTop: '12px', width: '100%', textDecoration: 'none', textAlign: 'center', display: 'inline-block', boxSizing: 'border-box' }}>
           Login
         </a>
       </div>

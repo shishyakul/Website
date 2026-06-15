@@ -6,6 +6,7 @@ import About from './pages/About';
 import Faculty from './pages/Faculty';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
+import Login from './pages/Login';
 import './App.css';
 
 function KineticBackground() {
@@ -34,11 +35,14 @@ function ScrollToTop() {
 }
 
 function AppRoutes() {
+  const { pathname } = useLocation();
+  const isLoginPage = pathname === '/login';
+
   return (
     <>
       <KineticBackground />
       <ScrollToTop />
-      <Navbar />
+      {!isLoginPage && <Navbar />}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -46,6 +50,7 @@ function AppRoutes() {
           <Route path="/faculty" element={<Faculty />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </main>
     </>
