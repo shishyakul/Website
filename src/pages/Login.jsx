@@ -133,6 +133,30 @@ export default function Login() {
         <DecorBlobs />
         <Particles />
 
+        <a href={import.meta.env.VITE_CORE_URL || "https://core.shishyakul.in/login"} style={{
+          position: 'absolute',
+          top: 24,
+          right: 24,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          padding: '8px 16px',
+          background: '#fdb42a',
+          color: '#111827',
+          borderRadius: 99,
+          fontSize: 14,
+          fontWeight: 600,
+          textDecoration: 'none',
+          border: '1px solid #e6a010',
+          boxShadow: '0 4px 12px rgba(253,180,42,0.3)',
+          zIndex: 10,
+          transition: 'all 0.2s ease'
+        }} onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.background = '#ffc04d'; }}
+           onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.background = '#fdb42a'; }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>admin_panel_settings</span>
+          Sign in as Core Team
+        </a>
+
         {/* Kinetic mouse-tracking background (reused from App.jsx) */}
         <div id="kinetic-bg" />
 
