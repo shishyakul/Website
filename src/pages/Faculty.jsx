@@ -12,7 +12,7 @@ const faculty = [
     role: 'Subject Expert',
     specialty: 'SOCIAL SCIENCE & ENGLISH',
     desc: 'Dedicated educator bringing clarity to History, Geography, Civics and English language skills with structured notes and engaging sessions.',
-    initials: 'MR',
+    image: '/faculty/MAYUR SIR PHOTO.jpeg',
     color: '#7f5600',
   },
   {
@@ -21,7 +21,7 @@ const faculty = [
     role: 'Language Specialist',
     specialty: 'HINDI & MARATHI',
     desc: 'Expert in regional language learning, helping students build strong grammar foundations and excel in Hindi and Marathi board examinations.',
-    initials: 'AC',
+    image: '/faculty/ASAWARI MAAM PHOTO.png',
     color: '#505f76',
   },
   {
@@ -30,7 +30,7 @@ const faculty = [
     role: 'Science Faculty',
     specialty: 'SCIENCE',
     desc: 'Passionate about simplifying complex scientific concepts through real-world examples, lab-based thinking, and exam-oriented preparation.',
-    initials: 'SM',
+    image: '/faculty/SNEHA MAAM PHOTO.png',
     color: '#565e74',
   },
   {
@@ -39,7 +39,7 @@ const faculty = [
     role: 'Mathematics Expert',
     specialty: 'MATHEMATICS',
     desc: 'Makes Mathematics approachable through step-by-step problem solving, regular practice sets, and doubt-clearing sessions for Classes 8–10.',
-    initials: 'BP',
+    image: '/faculty/BRIJESH SIR PHOTO 1.png',
     color: '#7f5600',
   },
   {
@@ -48,7 +48,7 @@ const faculty = [
     role: 'Subject Expert',
     specialty: 'SOCIAL SCIENCE & ENGLISH',
     desc: 'Passionate educator bringing clarity to History, Geography, Civics and English language skills with structured notes and engaging sessions.',
-    initials: 'SR',
+    image: '/faculty/SMRITI MAAM PORTRAIT.png',
     color: '#7f5600',
   },
 ];
@@ -125,15 +125,8 @@ export default function Faculty() {
       <section style={{ background: 'var(--color-surface-container-lowest)', padding: '28px 0', position: 'sticky', top: '72px', zIndex: 30, borderBottom: '1px solid var(--color-glass-stroke)', backdropFilter: 'blur(8px)' }}>
         <div className="page-container">
           <div className="faculty-filter">
-            <div className="faculty-search-wrap">
-              <span className="material-symbols-outlined" style={{ fontSize: '20px', color: 'var(--color-outline)', position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}>search</span>
-              <input
-                type="text"
-                placeholder="Search by name or subject..."
-                className="input-field faculty-search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+            <div className="faculty-search-wrap" style={{ display: 'none' }}>
+              {/* Search removed per user request */}
             </div>
             <div className="faculty-pills">
               {departments.map((dept) => (
@@ -157,28 +150,19 @@ export default function Faculty() {
             {filtered.map((member, i) => (
               <RevealWrapper key={member.name} delay={`delay-${(i % 4) * 100}`}>
                 <div className="faculty-card">
-                  {/* Avatar instead of photo since no real photos provided */}
-                  <div className="faculty-card-img-wrap" style={{ aspectRatio: '1', background: 'var(--color-surface-container)' }}>
-                    <div style={{
-                      width: '100%', height: '100%',
-                      display: 'flex', flexDirection: 'column',
-                      alignItems: 'center', justifyContent: 'center',
-                      background: `linear-gradient(135deg, ${member.color}18, ${member.color}30)`,
-                    }}>
-                      <div style={{
-                        width: '80px', height: '80px',
-                        borderRadius: '9999px',
-                        background: member.color,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '28px', fontWeight: 700,
-                        color: '#fff',
-                        fontFamily: 'var(--font-display)',
-                        marginBottom: '12px',
-                        boxShadow: `0 8px 24px ${member.color}40`,
-                      }}>
-                        {member.initials}
-                      </div>
-                    </div>
+                  {/* Faculty Photo */}
+                  <div className="faculty-card-img-wrap" style={{ aspectRatio: '1', background: 'var(--color-surface-container)', overflow: 'hidden', position: 'relative' }}>
+                    <img 
+                      src={member.image} 
+                      alt={member.name}
+                      loading="lazy"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center 15%' /* Focuses more closely on the face/upper body */
+                      }}
+                    />
                     <div className="faculty-card-badge">{member.role}</div>
                   </div>
                   <div className="faculty-card-body">
