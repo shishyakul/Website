@@ -37,6 +37,27 @@ export default async function handler(req, res) {
     }
 
     const uid = firebaseData.localId;
+    const idToken = firebaseData.idToken;
+
+    /* ── Fetch user role from Firestore REST API ── */
+    const projectId = process.env.FIREBASE_PROJECT_ID;
+    const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${uid}`;
+    
+    const fsRes = await fetch(firestoreUrl, {
+      headers: { Authorization: `Bearer ${idToken}` }
+    });
+    
+    if (!fsRes.ok) {
+      return res.status(401).json({ error: 'Could not retrieve user profile.' });
+    }
+    
+    const fsData = await fsRes.json();
+    const role = fsData?.fields?.role?.stringValue;
+    
+    const allowedPortalRoles = ['admin', 'branch_manager', 'service_manager', 'frontend_desk_manager', 'inventory_manager'];
+    if (!allowedPortalRoles.includes(role)) {
+      return res.status(403).json({ error: 'This email belongs to the Core Team. Please log in at shaitansquad.vercel.app' });
+    }
 
     /* ── Step 2: Create a short-lived Custom Token manually ──
        We use jsonwebtoken instead of the massive firebase-admin SDK 
