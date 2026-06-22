@@ -115,7 +115,11 @@ export default function Login() {
       let portalUrl = data.redirectUrl || 'https://portal.shishyakul.in/auth';
       
       // Override for local network testing (so phones aren't redirected to localhost)
-      if (window.location.hostname !== 'localhost' && window.location.hostname !== 'shishyakul.in') {
+      if (
+        window.location.hostname !== 'localhost' && 
+        window.location.hostname !== 'shishyakul.in' &&
+        window.location.hostname !== 'www.shishyakul.in'
+      ) {
         const portalBase = `http://${window.location.hostname}:5174`;
         portalUrl = `${portalBase}/auth?token=${encodeURIComponent(data.customToken)}`;
       }
