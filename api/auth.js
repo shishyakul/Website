@@ -85,7 +85,7 @@ export default async function handler(req, res) {
     const portalBase = process.env.PORTAL_URL ?? 'https://portal.shishyakul.in';
     const redirectUrl = `${portalBase}/auth?token=${encodeURIComponent(customToken)}`;
 
-    return res.status(200).json({ redirectUrl });
+    return res.status(200).json({ redirectUrl, customToken });
 
   } catch (err) {
     console.error('[/api/auth] Unexpected error:', err);

@@ -117,7 +117,7 @@ export default function Contact() {
               <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
                 {[
                   { label: 'Facebook', icon: 'thumb_up', href: 'https://www.facebook.com/61575765819950' },
-                  { label: 'LinkedIn', icon: 'work', href: 'https://www.linkedin.com/in/shishyakul/' },
+                  { label: 'LinkedIn', icon: 'work', href: 'https://www.linkedin.com/company/shishyakul/' },
                   { label: 'Instagram', icon: 'photo_camera', href: 'https://www.instagram.com/shishyakul/?hl=en' },
                   { label: 'Google Maps', icon: 'map', href: 'https://maps.app.goo.gl/c1Lv45XNhYk7FUAz7' },
                 ].map((s) => (

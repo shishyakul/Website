@@ -176,7 +176,7 @@ export default function Faculty() {
                       <a href="https://www.instagram.com/shishyakul/?hl=en" target="_blank" rel="noopener noreferrer" className="faculty-icon-btn" title="Instagram">
                         <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>photo_camera</span>
                       </a>
-                      <a href="https://www.linkedin.com/in/shishyakul/" target="_blank" rel="noopener noreferrer" className="faculty-icon-btn" title="LinkedIn">
+                      <a href="https://www.linkedin.com/company/shishyakul/" target="_blank" rel="noopener noreferrer" className="faculty-icon-btn" title="LinkedIn">
                         <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>work</span>
                       </a>
                     </div>
