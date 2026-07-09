@@ -49,6 +49,19 @@ app.post('/api/submitJobApplication', async (req, res) => {
   }
 });
 
+import enrollBattalionHandler from './api/enrollBattalion.js';
+
+app.post('/api/enrollBattalion', async (req, res) => {
+  try {
+    await enrollBattalionHandler(req, res);
+  } catch (err) {
+    console.error("Local Server Error:", err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+});
+
 const PORT = 3000;
 const HOST = '0.0.0.0'; // Bind to all network interfaces
 

@@ -8,6 +8,7 @@ import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import JobApplicationForm from './pages/JobApplicationForm';
+import BattalionEnrollment from './pages/BattalionEnrollment';
 import './App.css';
 
 function KineticBackground() {
@@ -53,6 +54,7 @@ function AppRoutes() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/teacherjobapplicationform" element={<JobApplicationForm />} />
+          <Route path="/battalion-enrollment" element={<BattalionEnrollment />} />
         </Routes>
       </main>
     </>

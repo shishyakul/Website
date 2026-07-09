@@ -54,7 +54,7 @@ export default async function handler(req, res) {
     const fsData = await fsRes.json();
     const role = fsData?.fields?.role?.stringValue;
     
-    const allowedPortalRoles = ['admin', 'branch_manager', 'service_manager', 'frontend_desk_manager', 'inventory_manager'];
+    const allowedPortalRoles = ['admin', 'branch_manager', 'service_manager', 'frontend_desk_manager', 'inventory_manager', 'teacher', 'student'];
     if (!allowedPortalRoles.includes(role)) {
       return res.status(403).json({ error: 'This email belongs to the Core Team. Please log in at shaitansquad.vercel.app' });
     }
