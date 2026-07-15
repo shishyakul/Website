@@ -39,16 +39,45 @@ export default async function handler(req, res) {
     const uid = firebaseData.localId;
     const idToken = firebaseData.idToken;
 
-    /* ── Fetch user role from Firestore REST API ── */
+    /* ── Fetch user role from Firestore REST API using Admin Service Account ── */
     const projectId = process.env.FIREBASE_PROJECT_ID;
-    const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${uid}`;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+
+    if (!clientEmail || !privateKey) {
+      throw new Error('Firebase Admin Service Account credentials missing in environment.');
+    }
+
+    const now = Math.floor(Date.now() / 1000);
+    const authPayload = {
+      iss: clientEmail,
+      scope: 'https://www.googleapis.com/auth/datastore',
+      aud: 'https://oauth2.googleapis.com/token',
+      exp: now + 3600,
+      iat: now
+    };
+    const adminJwt = jwt.sign(authPayload, privateKey, { algorithm: 'RS256' });
+
+    const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${adminJwt}`
+    });
     
+    if (!tokenRes.ok) {
+      throw new Error('Failed to generate Admin Access Token');
+    }
+    const { access_token } = await tokenRes.json();
+
+    const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${uid}`;
     const fsRes = await fetch(firestoreUrl, {
-      headers: { Authorization: `Bearer ${idToken}` }
+      headers: { Authorization: `Bearer ${access_token}` }
     });
     
     if (!fsRes.ok) {
-      return res.status(401).json({ error: 'Could not retrieve user profile.' });
+      const fsErrText = await fsRes.text();
+      console.error('Firestore Error:', fsRes.status, fsErrText, firestoreUrl);
+      return res.status(401).json({ error: `Could not retrieve user profile.` });
     }
     
     const fsData = await fsRes.json();
@@ -62,14 +91,6 @@ export default async function handler(req, res) {
     /* ── Step 2: Create a short-lived Custom Token manually ──
        We use jsonwebtoken instead of the massive firebase-admin SDK 
        to prevent Vercel ESM cold-start crashes. */
-    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
-
-    if (!clientEmail || !privateKey) {
-      throw new Error('Firebase Admin Service Account credentials missing in environment.');
-    }
-
-    const now = Math.floor(Date.now() / 1000);
     const payload = {
       iss: clientEmail,
       sub: clientEmail,
