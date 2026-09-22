@@ -62,7 +62,7 @@ app.post('/api/enrollBattalion', async (req, res) => {
   }
 });
 
-const PORT = 3000;
+const PORT = 3001;
 const HOST = '0.0.0.0'; // Bind to all network interfaces
 
 app.listen(PORT, HOST, () => {
